@@ -40,43 +40,35 @@ def get_pet_labels(image_dir):
       List. The list contains for following item:
          index 0 = pet image label (string)
     """
-    # Replace None with the results_dic dictionary that you created with this
-    # function
-    
-    # create results_dic
-    results_dic = {}
-    
-    # get the filenames from the image directory
-    filenames = listdir(image_dir)
-    
-    edit_filenames = []
-    pet_labels = []
-    
-    # iteratethru filenames, make them lowercase, and split on '_' char
-    for file in filenames:
-        edited = file.lower().split("_")
-        pet_name = ""
+    in_files = listdir(image_dir)
+    results_dic = dict()
+
+    for idx in range(0, len(in_files), 1):
+       
+       # Skips file if starts with . (like .DS_Store of Mac OSX) because it 
+       # isn't an pet image file
+       if in_files[idx][0] != ".":
+
+           # TODO: 2a. BELOW REPLACE pass with CODE that will process each 
+           #          filename in the in_files list to extract the dog breed 
+           #          name from the filename. Recall that each filename can be
+           #          accessed by in_files[idx]. Be certain to place the 
+           #          extracted dog breed name in the variable pet_label 
+           #          that's created as an empty string ABOVE
+           low_pet_image = in_files[idx].lower()
+           word_list_pet_image = low_pet_image.split("_")
+           pet_name = ""
+           for word in word_list_pet_image:
+               if word.isalpha():
+                   pet_name += word + " "
+           pet_name = pet_name.strip()
+           if in_files[idx] not in results_dic:
+              results_dic[in_files[idx]] = [pet_name]
+              
+           else:
+               print("** Warning: Duplicate files exist in directory:", 
+                     in_files[idx])
+
         
-        # check the pet_name list from above and only add alpha chars
-        for word in edited:
-            if word.isalpha():
-                pet_name += word + " "
-        
-        # strip white space and add the result to pet_labels list
-        pet_labels.append(pet_name.strip())
-    
-    # iterate thru the filename list
-    for index in range(0, len(filenames), 1):
-        
-        # if the current filename isn't in results_dic, add it w/ matching label
-        if filenames[index] not in results_dic:
-             results_dic[filenames[index]] = [pet_labels[index]]
-        
-        # if current filename is already in, print warning
-        else:
-             print("** Warning: Key=", filenames[index], 
-                   "already exists in results_dic with value =", 
-                   results_dic[filenames[index]])
-    
-    
-    return 
+     
+    return results_dic
